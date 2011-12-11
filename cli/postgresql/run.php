@@ -125,7 +125,7 @@ class PostgreSQLDatabaseApp extends JCli
 	 * @since   11.3
 	 * @throws  JDatabaseException
 	 */
-	public function insertValues()
+	private function insertValues()
 	{
 		$this->out();
 		$this->out('================== insertValues ==================');
@@ -187,7 +187,7 @@ class PostgreSQLDatabaseApp extends JCli
 	 *
 	 * @since   11.3
 	 */
-	public function selectAll()
+	private function selectAll()
 	{
 		$this->out();
 		$this->out('================== selectAll ==================');
@@ -218,7 +218,7 @@ class PostgreSQLDatabaseApp extends JCli
 	 * 
 	 * @since 11.3
 	 */
-	public function showDbVersion()
+	private function showDbVersion()
 	{
 		$version = $this->dbo->getVersion();
 		$this->out();
@@ -235,7 +235,7 @@ class PostgreSQLDatabaseApp extends JCli
 	 * @since   11.3
 	 * @throws  JDatabaseException
 	 */
-	public function updateSecondRow()
+	private function updateSecondRow()
 	{
 		$this->out();
 		$this->out('================== updateSecondRow ==================');
@@ -257,7 +257,7 @@ class PostgreSQLDatabaseApp extends JCli
 	 * @since   11.3
 	 * @throws  JDatabaseException
 	 */
-	public function printSecondRow()
+	private function printSecondRow()
 	{
 		$this->out();
 		$this->out('================== printSecondRow ==================');
@@ -293,7 +293,7 @@ class PostgreSQLDatabaseApp extends JCli
 	 * @since   11.3
 	 * @throws  JDatabaseException
 	 */
-	public function test()
+	private function test()
 	{
 		$this->out();
 		$this->out('================== test ==================');
@@ -309,7 +309,7 @@ class PostgreSQLDatabaseApp extends JCli
 	 * @since   11.3
 	 * @throws  JDatabaseException
 	 */
-	public function isConnected()
+	private function isConnected()
 	{
 		$this->out();
 		$this->out('================== isConnected ==================');
@@ -325,7 +325,7 @@ class PostgreSQLDatabaseApp extends JCli
 	 * @since   11.3
 	 * @throws  JDatabaseException
 	 */
-	public function showCollation()
+	private function showCollation()
 	{
 		$this->out();
 		$this->out('================== showCollation ==================');
@@ -341,7 +341,7 @@ class PostgreSQLDatabaseApp extends JCli
 	 * @since   11.3
 	 * @throws  JDatabaseException
 	 */
-	public function showTableKeys()
+	private function showTableKeys()
 	{
 		$this->out();
 		$this->out('================== showTableKeys ==================');
@@ -357,7 +357,7 @@ class PostgreSQLDatabaseApp extends JCli
 	 * @since   11.3
 	 * @throws  JDatabaseException
 	 */
-	public function showTableColumns()
+	private function showTableColumns()
 	{
 		$this->out();
 		$this->out('================== showTableColumns ==================');
@@ -374,12 +374,39 @@ class PostgreSQLDatabaseApp extends JCli
 	 * @since   11.3
 	 * @throws  JDatabaseException
 	 */
-	public function getRandomValue()
+	private function getRandomValue()
 	{
 		$this->out();
 		$this->out('================== getRandomValue ==================');
 		$this->out('Random value: ' . $this->dbo->getRandom());
 		$this->out();
+	}
+
+	/**
+	 * Execute the application.
+	 *
+	 * The 'execute' method is the entry point for a command line application.
+	 *
+	 * @return  void
+	 *
+	 * @since   11.3
+	 */
+	public function execute()
+	{
+		$this->isConnected();
+		$this->showCollation();
+		$this->showDbVersion();
+		$this->test();
+
+		$this->insertValues();
+
+		$this->selectAll();
+		$this->showTableColumns();
+		$this->showTableKeys();
+
+		$this->updateSecondRow();
+		$this->printSecondRow();
+		$this->getRandomValue();
 	}
 }
 
@@ -388,23 +415,7 @@ class PostgreSQLDatabaseApp extends JCli
 // Wrap the execution in a try statement to catch any exceptions thrown anywhere in the script.
 try
 {
-	$pgSqlDbIstance = JCli::getInstance('PostgreSQLDatabaseApp');
-
-	$pgSqlDbIstance->isConnected();
-	$pgSqlDbIstance->showCollation();
-	$pgSqlDbIstance->showDbVersion();
-	$pgSqlDbIstance->test();
-
-	$pgSqlDbIstance->insertValues();
-
-	$pgSqlDbIstance->selectAll();
-	$pgSqlDbIstance->showTableColumns();
-	$pgSqlDbIstance->showTableKeys();
-
-	$pgSqlDbIstance->updateSecondRow();
-	$pgSqlDbIstance->printSecondRow();
-	$pgSqlDbIstance->getRandomValue();
-
+	$pgSqlDbIstance = JCli::getInstance('PostgreSQLDatabaseApp')->execute();
 }
 catch (Exception $e)
 {
